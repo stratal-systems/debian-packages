@@ -1,0 +1,7 @@
+Package: stratal-libgsl-static
+Version: 0.0-0
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: maybetree <maybetree@stratal.systems>
+Description: Static libGSL
