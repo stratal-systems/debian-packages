@@ -3,25 +3,7 @@ services:
     init: true
     #container_name: dev
     hostname: deb-stratal-dev
-    build:
-      dockerfile_inline: |
-        FROM debian:stable
-        RUN apt update
-        RUN apt install -y \
-          autoconf \
-          cmake \
-          debhelper \
-          gcc \
-          git \
-          git-annex \
-          gpg \
-          libcurl4-openssl-dev \
-          libtool \
-          lintian \
-          make \
-          zlib1g-dev \
-          && :
-
+    build: .
     volumes:
       - /dev/null:/play/compose.yml:ro
       - .:/play
