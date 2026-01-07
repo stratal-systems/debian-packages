@@ -58,7 +58,7 @@ tarball: ./upstream/github.com_HDFGroup_hdf5_archive_refs_tags_2.0.0.tar.gz
 	# need to git init just in case it wasn't initted already
 	# (e.g. in github workflow)
 	git -c user.name=deb-stratal -c user.email=no@example.com \
-		git init
+		annex init
 	git -c user.name=deb-stratal -c user.email=no@example.com \
 		annex get $@
 
