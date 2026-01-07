@@ -1,0 +1,68 @@
+#!/usr/bin/make -f
+
+clean: aclean
+
+build: compile
+
+binary: install
+	dh_makeshlibs
+	dh_gencontrol
+	dh_builddeb
+
+# ----
+
+# deps
+# build-essential meson cmake doxygen gfortrant
+# TODO
+# - package doxygen docs?
+
+TARBALL := github.com_HDFGroup_hdf5_archive_refs_tags_2.0.0.tar.gz 
+EROOT := ./build/hdf5-2.0.0
+
+
+install: compile
+	@mkdir -p debian/libhdf5-static-pic
+	cd build/build && \
+		cmake --install . --prefix ../../debian/libhdf5-static-pic
+
+compile: ./build/build/bin/libhdf5.a
+
+./build/build/bin/libhdf5.a: ${EROOT}/CMakeLists.txt
+	@mkdir -p build/build
+	cd build/build && \
+		cmake -G "Unix Makefiles" \
+			-DCMAKE_BUILD_TYPE:STRING=Release \
+			-DBUILD_SHARED_LIBS:BOOL=OFF \
+			-DBUILD_STATIC_LIBS:BOOL=ON \
+			-DHDF5_BUILD_CPP_LIB:BOOL=ON \
+			-DHDF5_BUILD_FORTRAN:BOOL=OFF \
+			-DHDF5_BUILD_JAVA:BOOL=OFF \
+			-DCMAKE_C_FLAGS:STRING="-fPIC" \
+			-DCMAKE_CXX_FLAGS:STRING="-fPIC" \
+			-DCMAKE_INSTALL_PREFIX=/usr \
+			../hdf5-2.0.0 \
+			&& \
+		cmake --build . --config Release
+	# TODO CMAKE_INSTALL_PREFIX is ignored??
+
+extract: ${EROOT}/CMakeLists.txt
+
+${EROOT}/CMakeLists.txt: ./upstream/${TARBALL}
+	@mkdir -p build
+	tar xf ./upstream/${TARBALL} --directory ./build
+
+tarball: ./upstream/github.com_HDFGroup_hdf5_archive_refs_tags_2.0.0.tar.gz 
+
+./upstream/%:
+	# user.name and user.email to avoid failing on author identity
+	git -c user.name=deb-stratal -c user.email=no@example.com \
+		annex get $@
+
+# Disable mtime check or something..? idk
+.SECONDARY: upstream/%
+
+aclean:
+	echo NOPE
+	#rm -rf build debian/libhdf5-static-pic
+
+

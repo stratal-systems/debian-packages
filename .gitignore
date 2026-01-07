@@ -112,17 +112,19 @@ target
 
 ### Project-specific ###
 
-pkg/*/vendor/.verified_ok
-pkg/*/.lint_ok
+# git annex symlinks
+!pkg/*/upstream/*.tar.gz
 pkg/*/build
-pkg/*/built
-pkg/*/*.deb
+pkg/*.changes
+pkg/*.buildinfo
+pkg/*.deb
+pkg/*/debian/*.debhelper.log
+pkg/*/debian/*.substvars
+pkg/*/debian/files
 
-# archives in `vendor` are git-annex symlinks
-!pkg/*/vendor/*.sig
-!pkg/*/vendor/*.url
-!pkg/*/vendor/*.txt
-!pkg/*/vendor/*.tar.gz
+pkg/libhdf5-static-pic/debian/libhdf5-static-pic
+
+
 
 
 
