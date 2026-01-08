@@ -61,7 +61,7 @@ tarball: ./upstream/github.com_HDFGroup_hdf5_archive_refs_tags_2.0.0.tar.gz
 		annex init
 	# Need to sync to be able to download files from `web` remote
 	git -c user.name=deb-stratal -c user.email=no@example.com \
-		annex sync origin
+		annex sync --no-push origin
 	git -c user.name=deb-stratal -c user.email=no@example.com \
 		annex get $@
 
