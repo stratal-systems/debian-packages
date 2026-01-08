@@ -21,9 +21,9 @@ EROOT := ./build/hdf5-2.0.0
 
 
 install: compile
-	@mkdir -p debian/libhdf5-static-pic
+	@mkdir -p debian/libhdf5-static-pic/usr
 	cd build/build && \
-		cmake --install . --prefix ../../debian/libhdf5-static-pic
+		cmake --install . --prefix ../../debian/libhdf5-static-pic/usr
 
 compile: ./build/build/bin/libhdf5.a
 
@@ -42,8 +42,8 @@ compile: ./build/build/bin/libhdf5.a
 			-DCMAKE_INSTALL_PREFIX=/usr \
 			../hdf5-2.0.0 \
 			&& \
-		cmake --build . --config Release
-	# TODO CMAKE_INSTALL_PREFIX is ignored??
+		cmake \
+			--build . --config Release
 
 extract: ${EROOT}/CMakeLists.txt
 

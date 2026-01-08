@@ -40,7 +40,7 @@ jobs:
             ${{ env.GITHUB_WORKSPACE }}/pkg/libhdf5-static-pic/build
           key: >
             builddir-libhdf5-static-pic-${{ runner.os }}-${{ env.BUILD_TYPE }}-${{ hashFiles('pkg/libhdf5-static-pic/debian/rules') }}
-          restore-key: |
+          restore-keys: |
             builddir-libhdf5-static-pic-${{ runner.os }}-${{ env.BUILD_TYPE }}
 
       - name: Cache libgsl-static-pic deb
@@ -60,7 +60,7 @@ jobs:
             ${{ env.GITHUB_WORKSPACE }}/pkg/libgsl-static-pic/build
           key: >
             builddir-libgsl-static-pic-${{ runner.os }}-${{ env.BUILD_TYPE }}-${{ hashFiles('pkg/libgsl-static-pic/debian/rules') }}
-          restore-key: |
+          restore-keys: |
             builddir-libgsl-static-pic-${{ runner.os }}-${{ env.BUILD_TYPE }}
 
       - name: Build packages
