@@ -1,0 +1,80 @@
+#!/usr/bin/make -f
+
+clean: aclean
+
+build: compile
+
+binary: install
+	dh_makeshlibs
+	dh_gencontrol
+	dh_builddeb
+
+# ----
+
+# deps
+# build-essential meson cmake doxygen gfortrant
+# TODO
+# - package doxygen docs?
+
+TARBALL := gsl-2.5.tar.gz
+EROOT := ./build/gsl-2.5
+
+
+install: compile
+	@mkdir -p debian/libgsl-static-pic
+	cd ${EROOT} && \
+		make \
+			SHELL=/bin/bash \
+			DESTDIR="$$(realpath ../../debian/libgsl-static-pic)" \
+			install
+	# Double $ to use shell realpath not make realpath
+
+compile: ${EROOT}/libgsl.a
+
+${EROOT}/libgsl.a: extract
+	cd ${EROOT} && \
+		./configure \
+			--prefix=/usr \
+			--enable-maintainer-mode \
+			--disable-shared \
+			--enable-static \
+			&& \
+		make SHELL=/bin/bash -j$(nproc)
+
+	#  shell is set to /bin/sh in the makefiles
+	#  will work with busybox ash but NOT with debian dash
+	#  have to override
+
+extract: ${EROOT}/configure
+
+${EROOT}/configure: ./upstream/${TARBALL}
+	@mkdir -p build
+	tar xf ./upstream/${TARBALL} --directory ./build
+	# the ./configure file expects /bin/sh to be bash-compatible
+	# apparently, but on ubuntu (debian too?) bin/sh is dash.
+	# Fix by overriding shebang.
+	cd ${EROOT} && \
+		sed -i -e '1i #!/bin/bash' ./configure
+
+tarball: ./upstream/${TARBALL}
+
+./upstream/%:
+	# user.name and user.email to avoid failing on author identity
+	# need to git init just in case it wasn't initted already
+	# (e.g. in github workflow)
+	git -c user.name=deb-stratal -c user.email=no@example.com \
+		annex init
+	# Need to sync to be able to download files from `web` remote
+	git -c user.name=deb-stratal -c user.email=no@example.com \
+		annex sync --no-push origin
+	git -c user.name=deb-stratal -c user.email=no@example.com \
+		annex get $@
+
+# Disable mtime check or something..? idk
+.SECONDARY: upstream/%
+
+aclean:
+	echo NOPE
+	#rm -rf build debian/libgsl-static-pic
+
+

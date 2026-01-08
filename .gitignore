@@ -123,6 +123,7 @@ pkg/*/debian/*.substvars
 pkg/*/debian/files
 
 pkg/libhdf5-static-pic/debian/libhdf5-static-pic
+pkg/libgsl-static-pic/debian/libgsl-static-pic
 
 
 

@@ -1,0 +1,11 @@
+Source: libgsl-static-pic
+Section: devel
+Priority: optional
+Maintainer: maybetree <maybetree@stratal.systems>
+Build-Depends: build-essential, debhelper (>= 9)
+
+Package: libgsl-static-pic
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: gnu libgsl compiled as static position-independent libraries.
+
