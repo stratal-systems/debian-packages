@@ -1,15 +1,16 @@
 FROM debian:bookworm
+ENV DEBIAN_FRONTEND=noninteractive
 RUN \
 	echo 'deb http://deb.debian.org/debian bookworm-backports main' >> \
 		/etc/apt/sources.list \
 		&& \
-	apt update
+	apt update && \
+	apt install -y apt-utils `# huh??? ` && \
+	:
 RUN \
-	apt install -t bookworm_backports \
-		cmake \
-		&& \
-	apt install -y \
+	apt install -y -t bookworm-backports \
 		autoconf \
+		cmake \
 		debhelper \
 		gcc \
 		git \
@@ -21,6 +22,8 @@ RUN \
 		make \
 		zlib1g-dev \
 		&& \
+	:
+RUN \
 	cmake --version && \
 	gcc --version && \
 	ldd --version && \
