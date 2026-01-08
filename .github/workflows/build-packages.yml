@@ -32,7 +32,7 @@ jobs:
             ${{ env.GITHUB_WORKSPACE }}/pkg/libhdf5-static-pic_2.0.0_amd64.deb
           key: >
             cmake-build-${{ runner.os }}-${{ env.BUILD_TYPE }}-
-            ${{ hashFiles('pkg/libhdf5-static-pic/*') }}
+            ${{ hashFiles('pkg/libhdf5-static-pic/debian/rules') }}
           #restore-keys: |
           #  cmake-build-${{ runner.os }}-${{ env.BUILD_TYPE }}-
 
