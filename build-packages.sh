@@ -30,7 +30,7 @@ do
 
 	cd_ass "./pkg/${pkg}"
 	dpkg-buildpackage -b || die "Failed to build $pkg"
-	cd_ass ..
+	cd_ass ../..
 done
 
 eecho "Done!"

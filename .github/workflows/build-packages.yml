@@ -25,28 +25,43 @@ jobs:
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      - name: Cache libhdf5-static-pic
+      - name: Cache libhdf5-static-pic deb
         uses: actions/cache@v4
         with:
           path: |
-            ${{ env.GITHUB_WORKSPACE }}/pkg/libhdf5-static-pic_2.0.0_amd64.deb
+            ${{ env.GITHUB_WORKSPACE }}/pkg/libhdf5-static-pic*.deb
           key: >
-            cmake-build-${{ runner.os }}-${{ env.BUILD_TYPE }}-
-            ${{ hashFiles('pkg/libhdf5-static-pic/debian/rules') }}
-          #restore-keys: |
-          #  cmake-build-${{ runner.os }}-${{ env.BUILD_TYPE }}-
-          #
+            deb-libhdf5-static-pic-${{ runner.os }}-${{ env.BUILD_TYPE }}-${{ hashFiles('pkg/libhdf5-static-pic/debian/rules') }}
 
-      - name: Cache libgsl-static-pic
+      - name: Cache libhdf5-static-pic build dir
         uses: actions/cache@v4
         with:
           path: |
-            ${{ env.GITHUB_WORKSPACE }}/pkg/libgsl-static-pic_2.0.0_amd64.deb
+            ${{ env.GITHUB_WORKSPACE }}/pkg/libhdf5-static-pic/build
           key: >
-            cmake-build-${{ runner.os }}-${{ env.BUILD_TYPE }}-
-            ${{ hashFiles('pkg/libgsl-static-pic/debian/rules') }}
+            builddir-libhdf5-static-pic-${{ runner.os }}-${{ env.BUILD_TYPE }}-${{ hashFiles('pkg/libhdf5-static-pic/debian/rules') }}
+          restore-key: |
+            builddir-libhdf5-static-pic-${{ runner.os }}-${{ env.BUILD_TYPE }}
+
+      - name: Cache libgsl-static-pic deb
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.GITHUB_WORKSPACE }}/pkg/libgsl-static-pic*.deb
+          key: >
+            deb-build-${{ runner.os }}-${{ env.BUILD_TYPE }}-${{ hashFiles('pkg/libgsl-static-pic/debian/rules') }}
           #restore-keys: |
           #  cmake-build-${{ runner.os }}-${{ env.BUILD_TYPE }}-
+
+      - name: Cache libgsl-static-pic build dir
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.GITHUB_WORKSPACE }}/pkg/libgsl-static-pic/build
+          key: >
+            builddir-libgsl-static-pic-${{ runner.os }}-${{ env.BUILD_TYPE }}-${{ hashFiles('pkg/libgsl-static-pic/debian/rules') }}
+          restore-key: |
+            builddir-libgsl-static-pic-${{ runner.os }}-${{ env.BUILD_TYPE }}
 
       - name: Build packages
         run: |
