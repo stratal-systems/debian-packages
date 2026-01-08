@@ -25,6 +25,17 @@ jobs:
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
+      - name: Cache libhdf5-static-pic
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.GITHUB_WORKSPACE }}/pkg/libhdf5-static-pic_2.0.0_amd64.deb
+          key: >
+            cmake-build-${{ runner.os }}-${{ env.BUILD_TYPE }}-
+            ${{ hashFiles('pkg/libhdf5-static-pic/*') }}
+          #restore-keys: |
+          #  cmake-build-${{ runner.os }}-${{ env.BUILD_TYPE }}-
+
       - name: Build packages
         run: |
           chmod +x ./build-packages.sh
